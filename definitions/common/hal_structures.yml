@@ -36,3 +36,20 @@ components:
       example: 100
       type: integer
       minimum: 1
+
+  parameters:
+    Page:
+      in: query
+      name: page
+      description: Page of results to jump to
+      required: false
+      schema:
+        $ref: '#/components/schemas/Page'
+
+    PageSize:
+      in: query
+      name: page_size
+      description: Number of results per page
+      required: false
+      schema:
+        $ref: '#/components/schemas/PageSize'

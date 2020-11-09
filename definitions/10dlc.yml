@@ -14,6 +14,9 @@ servers:
 
 paths:
   /v1/10DLC/brands:
+    parameters:
+      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
       tags:
         - Brands
@@ -162,6 +165,8 @@ paths:
   /v1/10DLC/brands/{brand_id}/campaigns:
     parameters:
       - $ref: '#/components/parameters/BrandId'
+      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
       tags:
         - Campaigns
@@ -280,6 +285,8 @@ paths:
     parameters:
       - $ref: '#/components/parameters/BrandId'
       - $ref: '#/components/parameters/CampaignId'
+      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
       tags:
         - Numbers
@@ -344,25 +351,6 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
         '413':
           $ref: '#/components/responses/BulkNumberLimitExceeded'
-
-  /v1/10DLC/brands/{brand_id}/campaigns/{campaign_id}/numbers/{number}:
-    parameters:
-      - $ref: '#/components/parameters/BrandId'
-      - $ref: '#/components/parameters/CampaignId'
-      - $ref: '#/components/parameters/Number'
-    delete:
-      tags:
-        - Numbers
-      summary: Remove a specific number from a campaign
-      description: Remove number from campaign
-      operationId: deleteNumber
-      responses:
-        '204':
-          description: No content
-        '401':
-          $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
-        '404':
-          $ref: "common/common_errors.yml#/components/responses/NotFoundError"
 
 components:
   examples:
@@ -739,7 +727,7 @@ components:
                   _embedded:
                     type: object
                     properties:
-                      brands:
+                      campaigns:
                         type: array
                         items:
                           $ref: '#/components/schemas/CampaignResponse'
@@ -889,6 +877,12 @@ components:
                           href:
                             type: string
                             example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c/campaigns/57b3a89e-c9fa-4860-aec2-ad7f51539dab"
+                      brand:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c"
           examples:
             simple:
               value:
