@@ -703,6 +703,39 @@ components:
                         type: array
                         items:
                           $ref: '#/components/schemas/BrandResponse'
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK?page=2"
+                      next:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/?page=1"
+                      previous:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/?page=1"
+                      first:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/?page=1"
+                      last:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/?page=10"
           examples:
             simple:
               value:
@@ -731,6 +764,45 @@ components:
                         type: array
                         items:
                           $ref: '#/components/schemas/CampaignResponse'
+                  _links:
+                    type: object
+                    properties:
+                      brand:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK"
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/?page=2"
+                      next:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/?page=1"
+                      previous:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/?page=1"
+                      first:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/?page=1"
+                      last:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/?page=10"
           examples:
             simple:
               value:
@@ -853,7 +925,13 @@ components:
                         properties:
                           href:
                             type: string
-                            example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c"
+                            example: "https://api.nexmo.com/v1/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c"
+                      brand:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK"
           examples:
             vonage:
               value:
@@ -934,10 +1012,6 @@ components:
         application/json:
           schema:
             oneOf:
-              - title: Individual Person
-                x-tab-id: IndividualPerson
-                allOf:
-                  - $ref: '#/components/schemas/CreateIndividualBrand'
               - title: Non-Profit
                 x-tab-id: NonProfit
                 allOf:
@@ -971,10 +1045,6 @@ components:
         application/json:
           schema:
             oneOf:
-              - title: Individual Person
-                x-tab-id: IndividualPerson
-                allOf:
-                  - $ref: '#/components/schemas/UpdateIndividualBrand'
               - title: Non-Profit
                 x-tab-id: NonProfit
                 allOf:
@@ -995,7 +1065,6 @@ components:
         entity_type:
           type: string
           enum:
-            - INDIVIDUAL
             - PRIVATE_PROFIT
             - PUBLIC_PROFIC
             - NON_PROFIT
@@ -1075,6 +1144,14 @@ components:
           type: string
           example:
             $ref: '#/components/examples/BrandVonage/value/vertical'
+        status:
+          type: string
+          description: Current status of the brand
+          example: "@todo: Need examples"
+        campaign_count:
+          type: integer
+          description: Number of campaigns associated with the brand
+          example: 5
 
     BrandEditableFields:
       description: Fields that are editable for a brand
@@ -1083,7 +1160,6 @@ components:
         entity_type:
           type: string
           enum:
-            - INDIVIDUAL
             - PRIVATE_PROFIT
             - PUBLIC_PROFIC
             - NON_PROFIT
@@ -1273,6 +1349,22 @@ components:
           type: boolean
           example:
             $ref: '#/components/examples/Campaign/value/affiliate_marketing'
+        status:
+          type: object
+          properties:
+            att:
+              type: string
+              description: Current status of the campaign
+              example: "@todo: Need examples"
+            tmobile:
+              type: string
+              description: Current status of the campaign
+              example: "@todo: Need examples"
+            verizon:
+              type: string
+              description: Current status of the campaign
+              example: "@todo: Need examples"
+          
 
     CampaignId:
       description: ID associated with a specific campaign
@@ -1299,11 +1391,19 @@ components:
                   properties:
                     href:
                       type: string
+                      example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/C1DEB879"
+                brand:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+                      example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK"
                 numbers:
                   type: object
                   properties:
                     href:
                       type: string
+                      example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/C1DEB879/numbers"
 
     CreateIndividualBrand:
       type: object
