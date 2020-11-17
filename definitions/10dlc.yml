@@ -1405,18 +1405,6 @@ components:
                       type: string
                       example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/C1DEB879/numbers"
 
-    CreateIndividualBrand:
-      type: object
-      properties:
-        $ref: '#/components/schemas/Brand/properties'
-      required:
-        - entity_type
-        - display_name
-        - phone
-        - country
-        - email
-        - brand_relationship
-
     CreateNonProfitBrand:
       type: object
       properties:
@@ -1427,10 +1415,15 @@ components:
         - company_name
         - ein
         - phone
-        - country
         - email
         - brand_relationship
         - website
+        - street
+        - city
+        - state
+        - postal_code
+        - country
+        - vertical
 
     CreatePrivateCompanyBrand:
       type: object
@@ -1442,9 +1435,14 @@ components:
         - company_name
         - ein
         - phone
-        - country
         - email
         - brand_relationship
+        - street
+        - city
+        - state
+        - postal_code
+        - country
+        - vertical
 
     CreatePublicCompanyBrand:
       type: object
@@ -1456,12 +1454,17 @@ components:
         - company_name
         - ein
         - phone
-        - country
         - email
         - brand_relationship
         - stock_symbol
         - stock_exchange
         - website
+        - street
+        - city
+        - state
+        - postal_code
+        - country
+        - vertical
 
     ErrorCouldNotRemoveNumber:
       allOf:
@@ -1552,18 +1555,6 @@ components:
               properties:
                 href:
                   type: string
-
-    UpdateIndividualBrand:
-      type: object
-      properties:
-        $ref: '#/components/schemas/BrandEditableFields/properties'
-      required:
-        - entity_type
-        - display_name
-        - phone
-        - country
-        - email
-        - brand_relationship
 
     UpdateNonProfitBrand:
       type: object
