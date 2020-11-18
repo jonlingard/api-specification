@@ -1066,7 +1066,7 @@ components:
           type: string
           enum:
             - PRIVATE_PROFIT
-            - PUBLIC_PROFIC
+            - PUBLIC_PROFIT
             - NON_PROFIT
           example:
             $ref: '#/components/examples/BrandVonage/value/entity_type'
@@ -1161,7 +1161,7 @@ components:
           type: string
           enum:
             - PRIVATE_PROFIT
-            - PUBLIC_PROFIC
+            - PUBLIC_PROFIT
             - NON_PROFIT
           example:
             $ref: '#/components/examples/BrandVonage/value/entity_type'
