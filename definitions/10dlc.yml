@@ -994,6 +994,8 @@ components:
             description: List of numbers to perform a bulk operation against
             type: object
             properties:
+              country:
+                $ref: '#/components/schemas/Country'
               numbers:
                 type: array
                 items:
@@ -1404,6 +1406,11 @@ components:
                     href:
                       type: string
                       example: "https://api.nexmo.com/v1/10DLC/brands/BLQKOPK/campaigns/C1DEB879/numbers"
+    Country:
+      type: string
+      example: 'US'
+      description: The two character country code in ISO 3166-1 alpha-2 format
+      pattern: '^[A-Z]{2}$'
 
     CreateNonProfitBrand:
       type: object
