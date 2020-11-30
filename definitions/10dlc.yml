@@ -224,7 +224,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Campaign'
+              $ref: '#/components/schemas/CampaignEditableFields'
       responses:
         '200':
           $ref: '#/components/responses/SingleCampaignResponse'
@@ -243,7 +243,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Campaign'
+              $ref: '#/components/schemas/CampaignEditableFields'
       responses:
         '200':
           $ref: '#/components/responses/SingleCampaignResponse'
@@ -424,6 +424,33 @@ components:
         sample_five: "Additional Sample Message"
         message_flow: "string"
         help_message: "string"
+        mno_metadata:
+          "10017":
+            surcharge: 0.0015
+            min_msg_samples: 1,
+            msg_class: A
+            req_subscriber_opt_out: false
+            mno_review: false,
+            no_embedded_phone: true,
+            mno: "AT&T"
+            tpm: 3000
+            req_subscriber_help: false
+            req_subscriber_opt_in: true
+            mno_support: true
+            no_embedded_link: true
+            qualify: true
+          "10035":
+            min_msg_samples: 1,
+            req_subscriber_help: false
+            req_subscriber_opt_out: false
+            req_subscriber_opt_in: true
+            mno_review: false
+            mno_support: true
+            no_embedded_phone: true,
+            no_embedded_link: true
+            qualify: true
+            brand_tier: "LOW"
+            mno: "TMO"
         auto_renewal: true
         _links:
           self:
@@ -1325,12 +1352,12 @@ components:
           type: string
           example:
             $ref: '#/components/examples/Campaign/value/help_message'
-        # mno_ids:
-        #   type: array
-        #   items:
-        #     type: string
-        #   example:
-        #     $ref: '#/components/examples/Campaign/value/mno_ids'
+        mno_metadata:
+          type: array
+          items:
+            type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/mno_metadata'
         affiliate_marketing:
           type: boolean
           example:
@@ -1351,6 +1378,46 @@ components:
               description: Current status of the campaign
               example: "@todo: Need examples"
           
+    CampaignEditableFields:
+      description: Fields that are editable for a campaign
+      type: object
+      properties:
+        reseller_id:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/reseller_id'
+        sample_one:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_one'
+        sample_two:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_two'
+        sample_three:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_three'
+        sample_four:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_four'
+        sample_five:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_five'
+        message_flow:
+          type: string
+        example:
+          $ref: '#/components/examples/Campaign/value/message_flow'
+        help_message:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/help_message'
+        auto_renewal:
+          type: boolean
+          example:
+            $ref: '#/components/examples/Campaign/value/auto_renewal'
 
     CampaignId:
       description: ID associated with a specific campaign
