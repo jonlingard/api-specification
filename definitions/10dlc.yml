@@ -10,7 +10,7 @@ info:
   description: APIs relating to 10DLC brand and campaign management
 
 servers:
-  - url: 'https://api.nexmo.com'
+  - url: 'https://api-eu.vonage.com'
 
 paths:
   /v1/10DLC/brands:
