@@ -196,22 +196,6 @@ paths:
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
 
-    # post:
-    #   tags:
-    #     - Campaign
-    #   description: Create a new brand
-    #   operationId: createCampaign
-    #   summary: Create a new brand for your account
-    #   requestBody:
-    #     $ref: '#/components/requestBodies/CreateBrand'
-    #   responses:
-    #     '201':
-    #       $ref: '#/components/responses/SingleCampaignResponse'
-    #     '401':
-    #       $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
-    #     '404':
-    #       $ref: "common/common_errors.yml#/components/responses/NotFoundError"
-
   /v1/10DLC/brands/{brand_id}/campaigns/{campaign_id}:
     parameters:
       - $ref: '#/components/parameters/BrandId'
