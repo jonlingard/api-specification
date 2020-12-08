@@ -401,7 +401,6 @@ components:
         campaign_id: "C1DEB879"
         csp_id: "string"
         reseller_id: "string"
-        status: "ACTIVE"
         created_date: "2020-10-06T08:51:32.119Z"
         brand_id: "BLQKOPK"
         vertical: "TECHNOLOGY"
@@ -451,6 +450,10 @@ components:
             brand_tier: "LOW"
             mno: "TMO"
         auto_renewal: true
+        status:
+          att: APPROVED
+          tmobile: APPROVED
+          verizon: APPROVED
         _links:
           self:
             $ref: '#/components/examples/LinkCampaign'
@@ -1166,10 +1169,6 @@ components:
           type: string
           example:
             $ref: '#/components/examples/BrandVonage/value/vertical'
-        status:
-          type: string
-          description: Current status of the brand
-          example: "@todo: Need examples"
         campaign_count:
           type: integer
           description: Number of campaigns associated with the brand
@@ -1375,17 +1374,11 @@ components:
           type: object
           properties:
             att:
-              type: string
-              description: Current status of the campaign
-              example: "@todo: Need examples"
+              $ref: '#/components/schemas/CampaignStatus'
             tmobile:
-              type: string
-              description: Current status of the campaign
-              example: "@todo: Need examples"
+              $ref: '#/components/schemas/CampaignStatus'
             verizon:
-              type: string
-              description: Current status of the campaign
-              example: "@todo: Need examples"
+              $ref: '#/components/schemas/CampaignStatus'
           
     CampaignEditableFields:
       description: Fields that are editable for a campaign
@@ -1466,6 +1459,18 @@ components:
                     href:
                       type: string
                       example: "https://api.nexmo.com/v1/10dlc/brands/BLQKOPK/campaigns/C1DEB879/numbers"
+
+    CampaignStatus:
+      description: Statuses that a campaign can be in
+      type: string
+      example: APPROVED
+      enum:
+        - UNKNOWN
+        - REVIEW
+        - REJECTED
+        - APPROVED
+        - SUSPENDED
+
     Country:
       type: string
       example: 'US'
