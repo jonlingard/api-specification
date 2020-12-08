@@ -426,7 +426,6 @@ components:
         help_message: "string"
         mno_metadata:
           "10017":
-            surcharge: 0.0015
             min_msg_samples: 1,
             msg_class: A
             req_subscriber_opt_out: false
@@ -487,7 +486,6 @@ components:
         quarterly_fee: 30
         mno_metadata:
           "10017":
-            surcharge: "0.0025"
             min_msg_samples: 2
             msg_class: Q
             req_subscriber_opt_in: false
@@ -1730,9 +1728,6 @@ components:
           type: boolean
         no_embedded_phone:
           type: boolean
-        surcharge:
-          type: string
-          example: "0.0025"
         msg_class:
           type: string
           example: "Q"
