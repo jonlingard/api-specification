@@ -1053,6 +1053,7 @@ components:
             properties:
               $ref: '#/components/schemas/Campaign/properties'
             required:
+              - account_id
               - brand_id
               - vertical
               - use_case
@@ -1081,6 +1082,7 @@ components:
     AccountID:
       description: The Vonage Account ID
       type: string
+      example: abcd1234
 
     Brand:
       type: object
