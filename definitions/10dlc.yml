@@ -576,6 +576,8 @@ components:
           schema:
             type: object
             properties:
+              country:
+                $ref: '#/components/schemas/Country'
               numbers:
                 type: array
                 items:
@@ -837,6 +839,8 @@ components:
                   _embedded:
                     type: object
                     properties:
+                      country:
+                        $ref: '#/components/schemas/Country'
                       numbers:
                         type: array
                         items:
@@ -1017,6 +1021,7 @@ components:
                   - '15556660001'
                   - '15556660002'
             required:
+              - country
               - numbers
 
     CreateBrand:
