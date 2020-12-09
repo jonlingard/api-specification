@@ -357,7 +357,6 @@ components:
         stock_symbol: "VG"
         stock_exchange: "NASDAQ"
         website: "https://vonage.com"
-        brand_relationship: "KEY_ACCOUNT"
         vertical: "TECHNOLOGY"
         _links:
           self:
@@ -386,7 +385,6 @@ components:
         stock_symbol: "VG"
         stock_exchange: "NASDAQ"
         website: "https://vonage.com"
-        brand_relationship: "KEY_ACCOUNT"
         vertical: "TECHNOLOGY"
         _links:
           self:
@@ -1157,16 +1155,6 @@ components:
           type: string
           example:
             $ref: '#/components/examples/BrandVonage/value/website'
-        brand_relationship:
-          type: string
-          enum:
-            - BASIC_ACCOUNT
-            - SMALL_ACCOUNT
-            - MEDIUM_ACCOUNT
-            - LARGE_ACCOUNT
-            - KEY_ACCOUNT
-          example:
-            $ref: '#/components/examples/BrandVonage/value/brand_relationship'
         vertical:
           type: string
           example:
@@ -1232,10 +1220,6 @@ components:
           type: string
           example:
             $ref: '#/components/examples/BrandVonage/value/stock_exchange'
-        brand_relationship:
-          type: string
-          example:
-            $ref: '#/components/examples/BrandVonage/value/brand_relationship'
         vertical:
           type: string
           example:
@@ -1494,7 +1478,6 @@ components:
         - ein
         - phone
         - email
-        - brand_relationship
         - website
         - street
         - city
@@ -1518,7 +1501,6 @@ components:
         - ein
         - phone
         - email
-        - brand_relationship
         - street
         - city
         - state
@@ -1541,7 +1523,6 @@ components:
         - ein
         - phone
         - email
-        - brand_relationship
         - stock_symbol
         - stock_exchange
         - website
@@ -1653,7 +1634,6 @@ components:
         - phone
         - country
         - email
-        - brand_relationship
         - website
 
     UpdatePrivateCompanyBrand:
@@ -1667,7 +1647,6 @@ components:
         - phone
         - country
         - email
-        - brand_relationship
 
     UpdatePublicCompanyBrand:
       type: object
@@ -1679,7 +1658,6 @@ components:
         - phone
         - country
         - email
-        - brand_relationship
         - stock_symbol
         - stock_exchange
         - website
