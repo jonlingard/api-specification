@@ -51,7 +51,9 @@ paths:
         '201':
           $ref: '#/components/responses/SingleBrand'
         '400':
-          $ref: '#/components/responses/ErrorCreateBrand'
+          $ref: '#/components/responses/ErrorGeneric'
+        '422':
+          $ref: '#/components/responses/ErrorBrandParameters'
         '401':
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
@@ -111,6 +113,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '422':
+          $ref: '#/components/responses/ErrorBrandParameters'
     delete:
       tags:
         - Brands
@@ -195,6 +199,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '422':
+          $ref: '#/components/responses/ErrorCampaignParameters'
 
   /v1/10dlc/brands/{brand_id}/campaigns/{campaign_id}:
     parameters:
@@ -232,6 +238,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '422':
+          $ref: '#/components/responses/ErrorCampaignParameters'
     put:
       tags:
         - Campaigns
@@ -251,6 +259,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '422':
+          $ref: '#/components/responses/ErrorCampaignParameters'
     delete:
       tags:
         - Campaigns
@@ -307,6 +317,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
         '413':
           $ref: '#/components/responses/BulkNumberLimitExceeded'
+        '422':
+          $ref: '#/components/responses/ErrorNumbersParameters'
 
   /v1/10dlc/brands/{brand_id}/campaigns/{campaign_id}/numbers/delete:
     parameters:
@@ -335,6 +347,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
         '413':
           $ref: '#/components/responses/BulkNumberLimitExceeded'
+        '422':
+          $ref: '#/components/responses/ErrorNumbersParameters'
 
 components:
   examples:
@@ -603,8 +617,28 @@ components:
             allOf:
               - $ref: '#/components/schemas/ErrorCouldNotRemoveNumber'
 
-    ErrorCreateBrand:
+    ErrorGeneric:
       description: Various errors that can occur during brand creation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Errors with submission
+                properties:
+                  title:
+                    description: Generic error message
+                    example: There were some issues with your submission
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#error-type'
+                  detail:
+                    description: Additional information about the error
+                    example: There were some errors submitting your brand, and a more detailed message would appear here
+
+    ErrorBrandParameters:
+      description: Various errors that can occur during brand data submission
       content:
         application/json:
           schema:
@@ -622,7 +656,7 @@ components:
                   detail:
                     description: Additional information about the error
                     example: There were some errors submitting your brand, please correct the requested fields
-                  errors:
+                  invalid_parameters:
                     description: Errors that are passed through from the Campaign Registry
                     type: array
                     items:
@@ -640,6 +674,78 @@ components:
                           type: string
                           description: Error text
                           example: Field 'company_name' is not unique
+
+    ErrorCampaignParameters:
+      description: Various errors that can occur during campaign data submission
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Errors with submission
+                properties:
+                  title:
+                    description: Generic error message
+                    example: There were some issues with the submitted data
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#invalid-campaign-data'
+                  detail:
+                    description: Additional information about the error
+                    example: There were some errors submitting your campaign, please correct the requested fields
+                  invalid_parameters:
+                    description: Errors that are passed through from the Campaign Registry
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          description: Campaign Registry error code
+                          example: 503
+                        field:
+                          type: string
+                          description: Field that had a data issue
+                          example: use_case
+                        description:
+                          type: string
+                          description: Error text
+                          example: Field 'use_case' is not a valid value
+
+    ErrorNumbersParameters:
+      description: Various errors that can occur during number data submission
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Errors with submission
+                properties:
+                  title:
+                    description: Generic error message
+                    example: There were some issues with the submitted data
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#invalid-number-data'
+                  detail:
+                    description: Additional information about the error
+                    example: There were some errors submitting your campaign, please correct the requested fields
+                  invalid_parameters:
+                    description: Errors from the number system
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Field that had a data issue
+                          example: country
+                        description:
+                          type: string
+                          description: Error text
+                          example: Field 'country' is not a valid value
 
     ErrorQualifyBrand:
       description: Various errors that can occur during brand use case qualification
