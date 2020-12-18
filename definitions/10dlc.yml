@@ -1274,14 +1274,8 @@ components:
       description: Fields that are editable for a brand
       type: object
       properties:
-        entity_type:
-          type: string
-          enum:
-            - PRIVATE_PROFIT
-            - PUBLIC_PROFIT
-            - NON_PROFIT
-          example:
-            $ref: '#/components/examples/BrandVonage/value/entity_type'
+        account_id:
+          $ref: '#/components/schemas/AccountID'
         display_name:
           type: string
           example:
@@ -1476,6 +1470,8 @@ components:
       description: Fields that are editable for a campaign
       type: object
       properties:
+        account_id:
+          $ref: '#/components/schemas/AccountID'
         reseller_id:
           type: string
           example:
@@ -1524,6 +1520,8 @@ components:
         - $ref: '#/components/schemas/Campaign'
         - type: object
           properties:
+            account_id:
+              $ref: '#/components/schemas/AccountID'
             campaign_id:
               $ref: '#/components/schemas/CampaignId'
             created_date:
