@@ -153,6 +153,8 @@ paths:
           $ref: '#/components/responses/ErrorQualifyBrand'
         '401':
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
+        '403':
+          $ref: '#/components/responses/ErrorUseCaseDenied'
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
         '429':
@@ -804,6 +806,26 @@ components:
                   detail:
                     description: Additional information about the error
                     example: invalid character 'f' after object key:value pair
+
+    ErrorUseCaseDenied:
+      description: Error for when we cannot parse the client-supplied request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Use Case is denied for brand
+                properties:
+                  title:
+                    description: Generic error message
+                    example: The requested use case is denied for this brand
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#use-case-denied'
+                  detail:
+                    description: Additional information about the error
+                    example: The requested use case has been denied for this brand. Your brand may require additional third party vetting.
 
     MultiBrandsResponse:
       description: List of brands that are associated with an account
