@@ -1174,9 +1174,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              $ref: '#/components/schemas/Campaign/properties'
+            allOf:
+              - $ref: '#/components/schemas/CampaignBase'
+              - $ref: '#/components/schemas/CampaignEditableFields'
             required:
               - account_id
               - vertical
@@ -1391,11 +1391,9 @@ components:
       type: string
       pattern: ^[0-9A-F]{7}$
 
-    Campaign:
+    CampaignBase:
       type: object
       properties:
-        brand_id:
-          $ref: '#/components/schemas/BrandId'
         vertical:
           type: string
           example:
@@ -1484,15 +1482,6 @@ components:
           type: boolean
           example:
             $ref: '#/components/examples/Campaign/value/affiliate_marketing'
-        status:
-          type: object
-          properties:
-            att:
-              $ref: '#/components/schemas/CampaignStatus'
-            tmobile:
-              $ref: '#/components/schemas/CampaignStatus'
-            verizon:
-              $ref: '#/components/schemas/CampaignStatus'
           
     CampaignEditableFields:
       description: Fields that are editable for a campaign
@@ -1537,6 +1526,22 @@ components:
           example:
             $ref: '#/components/examples/Campaign/value/auto_renewal'
 
+    CampaignSystemFields:
+      description: Fields that are added by the system for a campaign
+      type: object
+      properties:
+        brand_id:
+          $ref: '#/components/schemas/BrandId'
+        status:
+          type: object
+          properties:
+            att:
+              $ref: '#/components/schemas/CampaignStatus'
+            tmobile:
+              $ref: '#/components/schemas/CampaignStatus'
+            verizon:
+              $ref: '#/components/schemas/CampaignStatus'
+
     CampaignId:
       description: ID associated with a specific campaign
       example: C1DEB879
@@ -1545,7 +1550,9 @@ components:
 
     CampaignResponse:
       allOf:
-        - $ref: '#/components/schemas/Campaign'
+        - $ref: '#/components/schemas/CampaignBase'
+        - $ref: '#/components/schemas/CampaignEditableFields'
+        - $ref: '#/components/schemas/CampaignSystemFields'
         - type: object
           properties:
             account_id:
