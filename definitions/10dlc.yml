@@ -1208,7 +1208,7 @@ components:
       type: string
       example: abcd1234
 
-    Brand:
+    BrandBase:
       type: object
       properties:
         account_id:
@@ -1286,10 +1286,6 @@ components:
           type: string
           example:
             $ref: '#/components/examples/BrandVonage/value/vertical'
-        campaign_count:
-          type: integer
-          description: Number of campaigns associated with the brand
-          example: 5
 
     BrandEditableFields:
       description: Fields that are editable for a brand
@@ -1346,9 +1342,20 @@ components:
           example:
             $ref: '#/components/examples/BrandVonage/value/vertical'
 
+    BrandSystemFields:
+      description: Fields that are added to a brand by the system
+      type: object
+      properties:
+        campaign_count:
+          type: integer
+          description: Number of campaigns associated with the brand
+          example: 5
+
     BrandResponse:
       allOf:
-        - $ref: '#/components/schemas/Brand'
+        - $ref: '#/components/schemas/BrandBase'
+        - $ref: '#/components/schemas/BrandEditableFields'
+        - $ref: '#/components/schemas/BrandSystemFields'
         - type: object
           properties:
             brand_id:
@@ -1387,6 +1394,8 @@ components:
     Campaign:
       type: object
       properties:
+        brand_id:
+          $ref: '#/components/schemas/BrandId'
         vertical:
           type: string
           example:
@@ -1588,7 +1597,8 @@ components:
 
     CreateNonProfitBrand:
       allOf:
-        - $ref: '#/components/schemas/Brand'
+        - $ref: '#/components/schemas/BrandBase'
+        - $ref: '#/components/schemas/BrandEditableFields'
         - type: object
           properties:
             account_id:
@@ -1611,7 +1621,8 @@ components:
 
     CreatePrivateCompanyBrand:
       allOf:
-        - $ref: '#/components/schemas/Brand'
+        - $ref: '#/components/schemas/BrandBase'
+        - $ref: '#/components/schemas/BrandEditableFields'
         - type: object
           properties:
             account_id:
@@ -1630,10 +1641,12 @@ components:
         - postal_code
         - country
         - vertical
+        - website
 
     CreatePublicCompanyBrand:
       allOf:
-        - $ref: '#/components/schemas/Brand'
+        - $ref: '#/components/schemas/BrandBase'
+        - $ref: '#/components/schemas/BrandEditableFields'
         - type: object
           properties:
             account_id:
