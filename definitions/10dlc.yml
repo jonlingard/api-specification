@@ -416,7 +416,6 @@ components:
         csp_id: "string"
         reseller_id: "string"
         created_date: "2020-10-06T08:51:32.119Z"
-        brand_id: "BLQKOPK"
         vertical: "TECHNOLOGY"
         use_case: "ACCOUNT_NOTIFICATION"
         sub_use_cases: ["2FA", "SECURITY_ALERT"]
@@ -1180,7 +1179,6 @@ components:
               $ref: '#/components/schemas/Campaign/properties'
             required:
               - account_id
-              - brand_id
               - vertical
               - use_case
               - description
@@ -1233,6 +1231,7 @@ components:
             $ref: '#/components/examples/BrandVonage/value/company_name'
         ein:
           type: string
+          pattern: ^([0-9]{2}[-]?[0-9]{7})$|^([0-9]{3}[-]?[0-9]{2}[-]?[0-9]{4})$
           example:
             $ref: '#/components/examples/BrandVonage/value/ein'
         alt_business_id_type:
@@ -1388,8 +1387,6 @@ components:
     Campaign:
       type: object
       properties:
-        brand_id:
-          $ref: '#/components/schemas/BrandId'
         vertical:
           type: string
           example:
