@@ -201,6 +201,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '409':
+          $ref: '#/components/responses/ErrorBrandNotQualified'
         '422':
           $ref: '#/components/responses/ErrorCampaignParameters'
 
@@ -637,6 +639,26 @@ components:
                   detail:
                     description: Additional information about the error
                     example: There were some errors submitting your brand, and a more detailed message would appear here
+
+    ErrorBrandNotQualified:
+      description: Various errors that can occur during brand creation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Conflict when a campaign is being created against a brand that hasn't qualified for the specified use case
+                properties:
+                  title:
+                    description: Generic error message
+                    example: This brand has not been qualified for the given use case
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#error-brand-not-qualified'
+                  detail:
+                    description: Additional information about the error
+                    example: A campaign use case must be checked before a campaign can be created. Please verify the brand use case before submitting this campaign.
 
     ErrorBrandParameters:
       description: Various errors that can occur during brand data submission
