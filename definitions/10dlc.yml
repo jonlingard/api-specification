@@ -451,6 +451,7 @@ components:
             mno_support: true
             no_embedded_link: true
             qualify: true
+            status: "APPROVED"
           "10035":
             min_msg_samples: 1,
             req_subscriber_help: false
@@ -463,11 +464,9 @@ components:
             qualify: true
             brand_tier: "LOW"
             mno: "TMO"
+            status: "APPROVED"
         auto_renewal: true
-        status:
-          att: APPROVED
-          tmobile: APPROVED
-          verizon: APPROVED
+        status: "ACTIVE"
         _links:
           self:
             $ref: '#/components/examples/LinkCampaign'
@@ -1538,14 +1537,9 @@ components:
           example:
             $ref: '#/components/examples/Campaign/value/mno_metadata'
         status:
-          type: object
-          properties:
-            att:
-              $ref: '#/components/schemas/CampaignStatus'
-            tmobile:
-              $ref: '#/components/schemas/CampaignStatus'
-            verizon:
-              $ref: '#/components/schemas/CampaignStatus'
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/status'
 
     CampaignId:
       description: ID associated with a specific campaign
@@ -1595,11 +1589,8 @@ components:
       type: string
       example: APPROVED
       enum:
-        - UNKNOWN
-        - REVIEW
-        - REJECTED
-        - APPROVED
-        - SUSPENDED
+        - ACTIVE
+        - EXPIRED
 
     Country:
       type: string
@@ -1743,6 +1734,17 @@ components:
                 type: string
                 description: Additional validation information
                 example: Limit of 50 numbers exceeded
+
+    MNOCampaignStatus:
+      description: Statuses that a campaign has in relation to a specific MNO
+      type: string
+      example: APPROVED
+      enum:
+        - UNKNOWN
+        - REVIEW
+        - REJECTED
+        - APPROVED
+        - SUSPENDED
 
     Number:
       description: Telephone Number
