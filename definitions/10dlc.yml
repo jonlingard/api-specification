@@ -1472,12 +1472,6 @@ components:
           type: string
           example:
             $ref: '#/components/examples/Campaign/value/help_message'
-        mno_metadata:
-          type: array
-          items:
-            type: string
-          example:
-            $ref: '#/components/examples/Campaign/value/mno_metadata'
         affiliate_marketing:
           type: boolean
           example:
@@ -1532,6 +1526,12 @@ components:
       properties:
         brand_id:
           $ref: '#/components/schemas/BrandId'
+        mno_metadata:
+          type: array
+          items:
+            type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/mno_metadata'
         status:
           type: object
           properties:
