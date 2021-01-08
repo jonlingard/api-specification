@@ -420,6 +420,7 @@ components:
         use_case: "ACCOUNT_NOTIFICATION"
         sub_use_cases: ["2FA", "SECURITY_ALERT"]
         description: "User notifications"
+        label: "This is a sample campaign"
         embedded_link: false
         embedded_phone: false
         affiliate_marketing: true
@@ -1483,6 +1484,10 @@ components:
       properties:
         account_id:
           $ref: '#/components/schemas/AccountID'
+        label:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/label'
         reseller_id:
           type: string
           example:
