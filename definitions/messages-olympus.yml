@@ -1267,16 +1267,11 @@ components:
                   type: object
                   required:
                     - num_messages
-                    - keyword
                   properties:
                       num_messages:
                         type: string
                         example: "2"
                         description: The number of inbound SMS messages concatenated together to comprise this message. SMS messages are 160 characters, if an inbound message exceeds that size they are concatenated together to forma single message. This number indicates how many messages formed this webhook.
-                      keyword:
-                        type: string
-                        example: "HELLO"
-                        description: The first word of the message sent to uppercase.
         usage:
           type: object
           properties:
