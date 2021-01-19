@@ -1206,6 +1206,7 @@ components:
         - to
         - from
         - message
+        - usage
       properties:
         to:
           type: object
@@ -1244,13 +1245,13 @@ components:
           type: object
           required:
             - content
+            - sms
           properties:
             content:
               type: object
               required:
                 - type
                 - text
-                - sms
               properties:
                 type:
                   type: string
@@ -1263,17 +1264,20 @@ components:
                   type: string
                   description: |
                     The UTF-8 encoded text of the inbound message.
-                sms:
-                  type: object
-                  required:
-                    - num_messages
-                  properties:
-                      num_messages:
-                        type: string
-                        example: "2"
-                        description: The number of inbound SMS messages concatenated together to comprise this message. SMS messages are 160 characters, if an inbound message exceeds that size they are concatenated together to forma single message. This number indicates how many messages formed this webhook.
+            sms:
+              type: object
+              required:
+                - num_messages
+              properties:
+                  num_messages:
+                    type: string
+                    example: "2"
+                    description: The number of inbound SMS messages concatenated together to comprise this message. SMS messages are 160 characters, if an inbound message exceeds that size they are concatenated together to forma single message. This number indicates how many messages formed this webhook.
         usage:
           type: object
+          required:
+            - currency
+            - price
           properties:
             currency:
               type: string
