@@ -624,26 +624,28 @@ components:
                     example:
                       - "15556660001"
                   errors:
-                    allOf:
-                      - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
-                      - type: object
-                        description: Unable to process all numbers successfully
-                        properties:
-                          title:
-                            description: Description of error
-                            example: Not all of the numbers could be operated on successfully
-                          type:
-                            description: Link to error / remediation options
-                            example: 'https://developer.nexmo.com/api-errors/10dlc#bulk-partial-success'
-                          detail:
-                            description: Additional information about the error
-                            example: Some or all of the numbers you attempted to work with could not be processed.
-                          numbers:
-                            type: array
-                            items:
-                              $ref: '#/components/schemas/Number'
-                            example:
-                              - "15556660002"
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+                        - type: object
+                          description: Unable to process all numbers successfully
+                          properties:
+                            title:
+                              description: Description of error
+                              example: Not all of the numbers could be operated on successfully
+                            type:
+                              description: Link to error / remediation options
+                              example: 'https://developer.nexmo.com/api-errors/10dlc#bulk-partial-success'
+                            detail:
+                              description: Additional information about the error
+                              example: Some or all of the numbers you attempted to work with could not be processed.
+                            numbers:
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/Number'
+                              example:
+                                - "15556660002"
 
     BulkNumberSuccess:
       description: Successful bulk operation
