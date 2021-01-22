@@ -159,14 +159,74 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
         '429':
           $ref: "common/common_errors.yml#/components/responses/ThrottledError"
-  
-  # /v1/10dlc/brands/{brand_id}/vetting:
-  #   get:
-  #     description: Retrieve current information needed for vetting a brand
-  #   post:
-  #     description: Request vetting for a brand
-  #   put:
-  #     description: Update vetting information for a brand
+
+  /v1/10dlc/brands/{brand_id}/vetting/classes:
+    parameters:
+      - $ref: "#/components/parameters/BrandId"
+    get:
+      tags:
+        - Brands
+      summary: Retrieve a list of vetting classifications that can be performed
+      description: |
+        When requesting brand vetting, a vetting class must be supplied. This
+        determines the scope of the vetting to be performed by the vetting
+        provider.
+      operationId: getVettingClasses
+      responses:
+        '200':
+          $ref: '#/components/responses/VettingClasses'
+
+
+  /v1/10dlc/brands/{brand_id}/vetting/providers:
+    parameters:
+      - $ref: "#/components/parameters/BrandId"
+    get:
+      tags:
+        - Brands
+      summary: Retrieve a list of vetting providers
+      description: |
+        When requesting external vetting, a user must select from a list of
+        approved vetting providers.
+      operationId: getVettingProviders
+      responses:
+        '200':
+          $ref: '#/components/responses/VettingProviders'
+
+  /v1/10dlc/brands/{brand_id}/vetting/requests:
+    parameters:
+      - $ref: "#/components/parameters/BrandId"
+    get:
+      tags:
+        - Brands
+      summary: Retrieve a list of vetting records for a brand
+      description: Retrieve a list of vetting records for a brand
+      operationId: getVettingRequests
+      responses:
+        '200':
+          description: Returns a list of vetting requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VettingRequest'
+    post:
+      tags:
+        - Brands
+      summary: Request vetting for a brand
+      description: |
+        This performs a request to a specific vetting partner to perform
+        vetting for a brand. This authorizes Vonage to allow the vetting
+        partner access to the particular brand information. This request
+        can take anywhere from a few minutes to 48 hours.
+      operationId: requestVetting
+      requestBody:
+        $ref: '#/components/requestBodies/VettingRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/VettingRequest'
+  #   # put:
+  #   #   description: Update vetting information for a brand
 
   /v1/10dlc/brands/{brand_id}/campaigns:
     parameters:
@@ -1148,6 +1208,60 @@ components:
                             type: string
                             example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c/campaigns/57b3a89e-c9fa-4860-aec2-ad7f51539dab"
 
+    VettingClasses:
+      description: List of vetting classes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                enabled:
+                  type: boolean
+                display_name:
+                  type: string
+                description:
+                  type: string
+                validity_months:
+                  type: integer
+                  example: 12
+
+    VettingProviders:
+      description: List of vetting providers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                evp_id:
+                  type: string
+                display_name:
+                  type: string
+                tcr_billable:
+                  type: boolean
+                vetting_classes:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "class1"
+                    - "class2"
+                vetting_instruction:
+                  type: string
+
+    VettingRequest:
+      description: Information about a vetting request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/VettingRequest'
+
   requestBodies:
     BulkNumbers:
       required: true
@@ -1223,6 +1337,25 @@ components:
                 x-tab-id: PublicCompany
                 allOf:
                   - $ref: '#/components/schemas/UpdatePublicCompanyBrand'
+
+    VettingRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            description: Information needed to authorize a vetting request
+            type: object
+            properties:
+              evp_id:
+                type: string
+                example: "abcd123"
+              vetting_class:
+                description: Type of vetting to perform.
+                type: string
+                example: "abcd123"
+            required:
+              - evp_id
+              - vetting_class
 
   schemas:
     AccountID:
@@ -1892,6 +2025,30 @@ components:
           type: integer
         brand_tier:
           type: string
+
+    VettingRequest:
+      type: object
+      properties:
+        evp_id:
+          type: string
+        vetting_id:
+          type: string
+        vetting_token:
+          type: string
+        vetting_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        vetting_class:
+          type: string
+        vetting_status:
+          type: string
+        vetted_date:
+          type: string
+          format: date-time
+        create_date:
+          type: string
+          format: date-time
 
   parameters:
     BrandId:
