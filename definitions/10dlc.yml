@@ -225,8 +225,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VettingRequest'
-  #   # put:
-  #   #   description: Update vetting information for a brand
 
   /v1/10dlc/brands/{brand_id}/campaigns:
     parameters:
@@ -1621,6 +1619,10 @@ components:
           type: string
           example:
             $ref: '#/components/examples/Campaign/value/sample_four'
+        sample_five:
+          type: string
+          example:
+            $ref: '#/components/examples/Campaign/value/sample_five'
         message_flow:
           type: string
           example:
