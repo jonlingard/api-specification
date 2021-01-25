@@ -377,8 +377,6 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
-        '413':
-          $ref: '#/components/responses/BulkNumberLimitExceeded'
         '422':
           $ref: '#/components/responses/ErrorNumbersParameters'
 
@@ -407,8 +405,6 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
-        '413':
-          $ref: '#/components/responses/BulkNumberLimitExceeded'
         '422':
           $ref: '#/components/responses/ErrorNumbersParameters'
 
@@ -586,26 +582,6 @@ components:
             brand_tier: "LOW"
 
   responses:
-    BulkNumberLimitExceeded:
-      description: Too many numbers to process
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
-              - type: object
-                description: Bulk Operations limit was exceeded
-                properties:
-                  title:
-                    description: Payload Too Large
-                    example: Payload Too Large
-                  type:
-                    description: Link to error / remediation options
-                    example: 'https://developer.nexmo.com/api-errors/10dlc#bulk-limit-exceeded'
-                  detail:
-                    description: Additional information about the error
-                    example: Your request contained too many items. Please reduce the number of items to 50 and try again.
-
     BulkPartialSuccess:
       description: Partially successfull bulk operation
       content:
