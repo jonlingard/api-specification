@@ -94,6 +94,8 @@ paths:
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '422':
+          $ref: '#/components/responses/ErrorVettingParameters'
     put:
       tags:
         - Brands
@@ -225,6 +227,50 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VettingRequest'
+        '422':
+          $ref: '#/components/responses/ErrorVettingParameters'
+        '429':
+          $ref: "common/common_errors.yml#/components/responses/ThrottledError"
+
+  /v1/10dlc/brands/{brand_id}/vetting/requests/{vetting_request_id}:
+    parameters:
+      - $ref: "#/components/parameters/BrandId"
+      - $ref: "#/components/parameters/VettingRequestId"
+    get:
+      tags:
+        - Brands
+      summary: Retrieve a specific vetting request for a brand
+      description: Retrieve a specific vetting request for a brand
+      operationId: getVettingRequest
+      responses:
+        '200':
+          description: Returns an individual of vetting request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VettingRequest'
+        '404':
+          $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+    put:
+      tags:
+        - Brands
+      summary: Import an existing vetting request to Vonage
+      description: |
+        Vetting requests can either be automated or manual. In the case that a
+        vetting request has been manually performed, or was requested outside of
+        Vonage, you can request that the request be imported. The vetting
+        request will be validated and, if successful, added to the brand. This
+        validation process is not immediate.
+      operationId: importVettingRequest
+      requestBody:
+        $ref: '#/components/requestBodies/ExistingVettingRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/VettingRequest'
+        '422':
+          $ref: '#/components/responses/ErrorVettingParameters'
+        '429':
+          $ref: "common/common_errors.yml#/components/responses/ThrottledError"
 
   /v1/10dlc/brands/{brand_id}/campaigns:
     parameters:
@@ -884,6 +930,44 @@ components:
                     description: Additional information about the error
                     example: The requested use case has been denied for this brand. Your brand may require additional third party vetting.
 
+    ErrorVettingParameters:
+      description: Various errors that can occur during vetting requests
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Errors with submission
+                properties:
+                  title:
+                    description: Generic error message
+                    example: There were some issues with the submitted data
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#invalid-vetting-data'
+                  detail:
+                    description: Additional information about the error
+                    example: There were some errors submitting your vetting request, please correct the requested fields
+                  invalid_parameters:
+                    description: Errors that are passed through from the Campaign Registry
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          description: Campaign Registry error code
+                          example: 503
+                        field:
+                          type: string
+                          description: Field that had a data issue
+                          example: evp_id
+                        description:
+                          type: string
+                          description: Error text
+                          example: Field 'evp_id' is not unique
+
     MultiBrandsResponse:
       description: List of brands that are associated with an account
       content:
@@ -1294,6 +1378,29 @@ components:
               - vertical
               - use_case
               - description
+
+    ExistingVettingRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            description: Information needed to import a vetting request
+            type: object
+            properties:
+              evp_id:
+                type: string
+                example: "abcd123"
+              vetting_class:
+                description: Type of vetting to perform.
+                type: string
+                example: "abcd123"
+              vetting_token:
+                description: Type of vetting to perform. Not required for all vetting providers.
+                type: string
+                example: "abcd123"
+            required:
+              - evp_id
+              - vetting_class
 
     UpdateBrand:
       required: true
@@ -2010,7 +2117,7 @@ components:
       type: object
       properties:
         evp_id:
-          type: string
+          $ref: '#/components/schemas/VettingRequestId'
         vetting_id:
           type: string
         vetting_token:
@@ -2029,6 +2136,11 @@ components:
         create_date:
           type: string
           format: date-time
+
+    VettingRequestId:
+      description: ID associated with a vetting request
+      type: string
+      pattern: ^[0-9A-F]{7}$
 
   parameters:
     BrandId:
@@ -2062,6 +2174,14 @@ components:
       required: true
       schema:
         type: string
+
+    VettingRequestId:
+      name: vetting_request_id
+      in: path
+      description: ID associated with a vetting request
+      required: true
+      schema:
+        $ref: '#/components/schemas/VettingRequestId'
 
 tags:
   - name: Brands
