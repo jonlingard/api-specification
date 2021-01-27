@@ -14,10 +14,10 @@ servers:
 
 paths:
   /v1/10dlc/brands:
-    parameters:
-      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
-      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
+      parameters:
+        - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+        - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
       tags:
         - Brands
       description: List brands
@@ -275,9 +275,10 @@ paths:
   /v1/10dlc/brands/{brand_id}/campaigns:
     parameters:
       - $ref: '#/components/parameters/BrandId'
-      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
-      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
+      parameters:
+        - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+        - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
       tags:
         - Campaigns
       description: List campaigns
