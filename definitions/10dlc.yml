@@ -387,9 +387,10 @@ paths:
     parameters:
       - $ref: '#/components/parameters/BrandId'
       - $ref: '#/components/parameters/CampaignId'
-      - $ref: 'common/hal_structures.yml#/components/parameters/Page'
-      - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
     get:
+      parameters:
+        - $ref: 'common/hal_structures.yml#/components/parameters/Page'
+        - $ref: 'common/hal_structures.yml#/components/parameters/PageSize'
       tags:
         - Numbers
       summary: Retrieve Numbers associated with a campaign
@@ -405,20 +406,15 @@ paths:
     post:
       tags:
         - Numbers
-      summary: Add numbers to a campaign
-      operationId: addNumbersToCampaign
+      summary: Link number to a campaign
+      operationId: linkNumberToCampaign
       description: |
-        Adds a series of numbers from a campaign. This endpoint supports _partial successes_. If a request is partially
-        successful, the response code will be `207` and details can be found in the response body.
-
-        If all items succeed, you will receive a `200`. If all items fail, you will receive a `400`.
+        Links an existing Vonage number to a 10DLC campaign.
       requestBody:
-        $ref: '#/components/requestBodies/BulkNumbers'
+        $ref: '#/components/requestBodies/LinkNumber'
       responses:
         '201':
-          $ref: '#/components/responses/BulkNumberSuccess'
-        '207':
-          $ref: '#/components/responses/BulkPartialSuccess'
+          $ref: '#/components/responses/NumberResponse'
         '401':
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
@@ -426,33 +422,37 @@ paths:
         '422':
           $ref: '#/components/responses/ErrorNumbersParameters'
 
-  /v1/10dlc/brands/{brand_id}/campaigns/{campaign_id}/numbers/delete:
+  /v1/10dlc/brands/{brand_id}/campaigns/{campaign_id}/numbers/{number}:
     parameters:
       - $ref: '#/components/parameters/BrandId'
       - $ref: '#/components/parameters/CampaignId'
-    post:
+      - $ref: '#/components/parameters/Number'
+    get:
       tags:
         - Numbers
-      summary: Remove a series of number from a campaign
-      operationId: deleteNumbersFromCampaign
-      description: |
-        Remove a series of numbers from a campaign. This endpoint supports _partial successes_. If a request is partially
-        successful, the response code will be `207` and details can be found in the response body.
-
-        If all items succeed, you will receive a `200`. If all items fail, you will receive a `400`.
-      requestBody:
-        $ref: '#/components/requestBodies/BulkNumbers'
+      summary: Retrieve information about a number in a campaign
+      description: Retrieve information about a number in a campaign
+      operationId: getNumber
       responses:
-        '201':
-          $ref: '#/components/responses/BulkNumberSuccess'
-        '207':
-          $ref: '#/components/responses/BulkPartialSuccess'
+        '200':
+          $ref: '#/components/responses/NumberResponse'
         '401':
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
-        '422':
-          $ref: '#/components/responses/ErrorNumbersParameters'
+    delete:
+      tags:
+        - Numbers
+      summary: Unlink a number from a campaign
+      description: Unlink a number from a campaign
+      operationId: unlinkNumber
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
+        '404':
+          $ref: "common/common_errors.yml#/components/responses/NotFoundError"
 
 components:
   examples:
@@ -583,6 +583,10 @@ components:
       value:
         "https://api.nexmo.com/v1/10dlc/brands/BLQKOPK/campaigns/C1DEB879/"
 
+    LinkNumber:
+      value:
+        "https://api.nexmo.com/v1/10dlc/brands/BLQKOPK/campaigns/C1DEB879/numbers/14155550110"
+
     Numbers:
       value:
         - "12025550150"
@@ -628,72 +632,6 @@ components:
             brand_tier: "LOW"
 
   responses:
-    BulkPartialSuccess:
-      description: Partially successfull bulk operation
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/responses/BulkNumberSuccess/content/application~1json/schema'
-              - type: object
-                properties:
-                  numbers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Number'
-                    example:
-                      - "15556660001"
-                  errors:
-                    type: array
-                    items:
-                      allOf:
-                        - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
-                        - type: object
-                          description: Unable to process all numbers successfully
-                          properties:
-                            title:
-                              description: Description of error
-                              example: Not all of the numbers could be operated on successfully
-                            type:
-                              description: Link to error / remediation options
-                              example: 'https://developer.nexmo.com/api-errors/10dlc#bulk-partial-success'
-                            detail:
-                              description: Additional information about the error
-                              example: Some or all of the numbers you attempted to work with could not be processed.
-                            numbers:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/Number'
-                              example:
-                                - "15556660002"
-
-    BulkNumberSuccess:
-      description: Successful bulk operation
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              country:
-                $ref: '#/components/schemas/Country'
-              numbers:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Number'
-                example:
-                  - "15556660001"
-                  - "15556660002"
-              _links:
-                type: object
-                properties:
-                  campaign:
-                    type: object
-                    properties:
-                      href:
-                        type: string
-                        example:
-                          $ref: '#/components/examples/LinkCampaign'
-
     ErrorCouldNotRemoveNumberResponse:
       description: Error response for number deletion errors
       content:
@@ -1096,7 +1034,7 @@ components:
                       - $ref: '#/components/examples/Campaign/value'
 
     MultiNumbersResponse:
-      description: List of campaigns that are associated with a brand
+      description: List of numbers that are associated with a campaign
       content:
         application/json:
           schema:
@@ -1107,35 +1045,10 @@ components:
                   _embedded:
                     type: object
                     properties:
-                      country:
-                        $ref: '#/components/schemas/Country'
                       numbers:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Number'
-                        example:
-                          - "15556660001"
-                          - "15556660002"
-                      _links:
-                        type: object
-                        properties:
-                          campaign:
-                            type: object
-                            properties:
-                              href:
-                                type: string
-                                example:
-                                  $ref: '#/components/examples/LinkCampaign'
-          examples:
-            simple:
-              value:
-                - page_size: 10
-                  page: 1
-                  total_pages: 1
-                  total_items: 6
-                  _embedded:
-                    numbers:
-                      $ref: '#/components/examples/Numbers/value'
+                          $ref: '#/components/schemas/NumberResponse'
 
     MultiUseCasesResponse:
       description: List of use cases that are associated with a brand
@@ -1163,6 +1076,13 @@ components:
                   _embedded:
                     use_cases:
                       $ref: '#/components/examples/UseCases/value'
+
+    NumberResponse:
+      description: Information about a number
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NumberResponse'
 
     QualifiedUseCase:
       description: A valid qualified use case for a brand
@@ -1323,28 +1243,21 @@ components:
               - $ref: '#/components/schemas/VettingRequest'
 
   requestBodies:
-    BulkNumbers:
+    LinkNumber:
       required: true
       content:
         application/json:
           schema:
-            description: List of numbers to perform a bulk operation against
+            description: Information needed to link a number to a campaign
             type: object
             properties:
               country:
                 $ref: '#/components/schemas/Country'
-              numbers:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Number'
-                minItems: 1
-                maxItems: 50
-                example:
-                  - '15556660001'
-                  - '15556660002'
+              number:
+                $ref: '#/components/schemas/Number'
             required:
               - country
-              - numbers
+              - number
 
     CreateBrand:
       required: true
@@ -1950,33 +1863,6 @@ components:
                     example:
                       - '15556660001'
 
-    ErrorTooManyNumbers:
-      type: object
-      description: "Limit Exceeded"
-      properties:
-        title:
-          description: Generic error message
-          example: Bad Request
-        type:
-          description: Link to error / remediation options
-          example: 'https://developer.nexmo.com/api-errors/10dlc#bulk-number-delete-limit'
-        detail:
-          description: Additional information about the error
-          example: The request failed due to validation errors
-        invalid_parameters:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the invalid key
-                example: ids
-              reason:
-                type: string
-                description: Additional validation information
-                example: Limit of 50 numbers exceeded
-
     MNOCampaignStatus:
       description: Statuses that a campaign has in relation to a specific MNO
       type: string
@@ -2001,6 +1887,8 @@ components:
       properties:
         number:
           $ref: '#/components/schemas/Number'
+        country:
+          $ref: '#/components/schemas/Country'
         _links:
           type: object
           properties:
@@ -2009,11 +1897,15 @@ components:
               properties:
                 href:
                   type: string
+                  example:
+                    $ref: '#/components/examples/LinkNumber/value'
             campaign:
               type: object
               properties:
                 href:
                   type: string
+                  example:
+                    $ref: '#/components/examples/LinkCampaign/value'
 
     UpdateNonProfitBrand:
       type: object
