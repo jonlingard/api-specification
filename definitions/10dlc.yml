@@ -1898,6 +1898,8 @@ components:
           $ref: '#/components/schemas/Number'
         country:
           $ref: '#/components/schemas/Country'
+        status:
+          $ref: '#/components/schemas/NumberStatus'
         _links:
           type: object
           properties:
@@ -1915,6 +1917,15 @@ components:
                   type: string
                   example:
                     $ref: '#/components/examples/LinkCampaign/value'
+
+    NumberStatus:
+      type: string
+      description: Current status of a number in a campaign
+      example: APPROVED
+      enum:
+        - APPROVED
+        - REJECTED
+        - PENDING
 
     UpdateNonProfitBrand:
       type: object
