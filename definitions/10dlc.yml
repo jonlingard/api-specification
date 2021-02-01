@@ -1187,7 +1187,15 @@ components:
                         properties:
                           href:
                             type: string
-                            example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c/campaigns/57b3a89e-c9fa-4860-aec2-ad7f51539dab"
+                            example:
+                              $ref: '#/components/examples/LinkNumber/value'
+                      campaign:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example:
+                              $ref: '#/components/examples/LinkCampaign/value'
 
     VettingClasses:
       description: List of vetting classes
