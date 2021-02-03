@@ -416,10 +416,14 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/NumberResponse'
+        '202':
+          $ref: '#/components/responses/NumberResponse'
         '401':
           $ref: "common/common_errors.yml#/components/responses/BadCredentialsError"
         '404':
           $ref: "common/common_errors.yml#/components/responses/NotFoundError"
+        '409':
+          $ref: '#/components/responses/ErrorNumbersAlreadyLinked'
         '422':
           $ref: '#/components/responses/ErrorNumbersParameters'
 
@@ -756,6 +760,26 @@ components:
                           type: string
                           description: Error text
                           example: Field 'use_case' is not a valid value
+
+    ErrorNumbersAlreadyLinked:
+      description: The number that was requested to link is already associated with another campaign
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: 'common/common_errors.yml#/components/responses/DefaultError/content/application~1json/schema'
+              - type: object
+                description: Errors with submission
+                properties:
+                  title:
+                    description: Generic error message
+                    example: Number Already Linked
+                  type:
+                    description: Link to error / remediation options
+                    example: 'https://developer.nexmo.com/api-errors/10dlc#number-already-linked'
+                  detail:
+                    description: Additional information about the error
+                    example: The number requested has already been linked to another campaign
 
     ErrorNumbersParameters:
       description: Various errors that can occur during number data submission
