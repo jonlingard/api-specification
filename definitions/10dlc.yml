@@ -1334,6 +1334,8 @@ components:
             description: Information needed to import a vetting request
             type: object
             properties:
+              account_id:
+                $ref: '#/components/schemas/AccountID'
               evp_id:
                 type: string
                 example: "abcd123"
@@ -1346,6 +1348,7 @@ components:
                 type: string
                 example: "abcd123"
             required:
+              - account_id
               - evp_id
               - vetting_class
 
@@ -1376,6 +1379,8 @@ components:
             description: Information needed to authorize a vetting request
             type: object
             properties:
+              account_id:
+                $ref: '#/components/schemas/AccountID'
               evp_id:
                 type: string
                 example: "abcd123"
@@ -1384,6 +1389,7 @@ components:
                 type: string
                 example: "abcd123"
             required:
+              - account_id
               - evp_id
               - vetting_class
 
@@ -2084,6 +2090,8 @@ components:
     VettingRequest:
       type: object
       properties:
+        account_id:
+          $ref: '#/components/schemas/AccountID'
         evp_id:
           $ref: '#/components/schemas/VettingRequestId'
         vetting_id:
