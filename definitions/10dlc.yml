@@ -2112,6 +2112,21 @@ components:
         create_date:
           type: string
           format: date-time
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+                  example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c/vetting/requests/abcd1234"
+            brand:
+              type: object
+              properties:
+                href:
+                  type: string
+                  example: "/10dlc/brands/5782db87-a867-4ccd-a0b5-1b7203cc438c"
 
     VettingRequestId:
       description: ID associated with a vetting request
